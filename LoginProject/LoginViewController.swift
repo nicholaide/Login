@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, CreateAccountViewControllerDelegate {
 
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -24,8 +24,27 @@ class LoginViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    //set the delegate
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "loginToCreateAccountSegue" {
+            var createAccountVC = segue.destinationViewController as! CreateAccountViewController
+            createAccountVC.delegate = self
+        }
+    }
+    
     @IBAction func loginButtonPressed(sender: UIButton) {
-        self.performSegueWithIdentifier("loginToMainSegue", sender: self)
+        
+        //accesing the NSUserDefaults
+        
+        let usernameSavedFromNSUserDefaults = NSUserDefaults.standardUserDefaults().objectForKey(kUserNameKey) as! String
+        println(usernameSavedFromNSUserDefaults)
+        let passwordSavedFromNSUserDefaults = NSUserDefaults.standardUserDefaults().objectForKey(kPasswordKey) as! String
+        println(passwordSavedFromNSUserDefaults)
+        
+        if usernameTextField.text == usernameSavedFromNSUserDefaults && passwordTextField.text == passwordSavedFromNSUserDefaults {
+            self.performSegueWithIdentifier("loginToMainSegue", sender: self)
+        }
+        
     }
 
     @IBAction func createAccountButtonPressed(sender: UIButton) {
@@ -34,14 +53,10 @@ class LoginViewController: UIViewController {
         
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    //CreateAccountViewControllerDelegate
+    func accountCreated() {
+        self.performSegueWithIdentifier("loginToMainSegue", sender: nil)
     }
-    */
+    
 
 }

@@ -24,9 +24,6 @@ class CreateAccountViewController: UIViewController {
     var delegate:CreateAccountViewControllerDelegate?
     
     
-    let kUserNameKey = "userNameKey" //k for constant
-    let kPasswordKey = "passwordKey"
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -40,13 +37,10 @@ class CreateAccountViewController: UIViewController {
     
     @IBAction func createAccountButtonPressed(sender: UIButton) {
         
-        if choosePasswordTextField.text == confirmPasswordTextField.text &&
-        choosePasswordTextField.text != nil {
-            //using NSUserDefault to store password, but this is not the recommend way due to security
-            //CoreData is better, but this is just to introduce us
-            NSUserDefaults.standardUserDefaults().setObject(self.chooseUsernameTextField, forKey: kUserNameKey)
-            NSUserDefaults.standardUserDefaults().setObject(self.choosePasswordTextField, forKey: kPasswordKey)
-            
+        if choosePasswordTextField.text == confirmPasswordTextField.text && choosePasswordTextField.text.isEmpty != true {
+            NSUserDefaults.standardUserDefaults().setObject(self.chooseUsernameTextField.text, forKey: kUserNameKey)
+            NSUserDefaults.standardUserDefaults().setObject(self.choosePasswordTextField.text, forKey: kPasswordKey)
+            NSUserDefaults.standardUserDefaults().synchronize()
             self.dismissViewControllerAnimated(true, completion: nil)
             
             delegate?.accountCreated()

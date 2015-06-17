@@ -8,6 +8,10 @@
 
 import UIKit
 
+//make these global constants
+let kUserNameKey = "userNameKey" //k for constant
+let kPasswordKey = "passwordKey"
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
